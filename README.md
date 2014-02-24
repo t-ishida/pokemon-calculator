@@ -1,7 +1,7 @@
-# ポケモン計算機
+# pokemon-calculator
 
-## 概要
+## description
 
-ポケモンの能力値を計算する仕組です。
+calculator for pokemon
 
 
