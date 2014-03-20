@@ -1,4 +1,4 @@
 <?php
-namespace pokemon\type;
+namespace pokemon\classes\type;
 class Type extends \EnumBase {
 }

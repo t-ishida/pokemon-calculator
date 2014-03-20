@@ -1,6 +1,8 @@
 <?php
-namespace pokemon\temperament;
-class Temperament extends \EnumBase{
+namespace pokemon\classes\temperament;
+use pokemon\lib\EnumBase;
+
+class Temperament extends EnumBase{
     public function getAttackReviseBudget () {
         return 1.0;
     }

@@ -1,5 +1,5 @@
 <?php
-namespace pokemon;
+namespace pokemon\classes;
 class Parameter {
     protected $familyPoint = null;
     protected $giftPoint = null;

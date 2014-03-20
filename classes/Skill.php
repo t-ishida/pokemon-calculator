@@ -1,5 +1,5 @@
 <?php
-namespace pokemon;
+namespace pokemon\classes;
 class Skill {
     private $name = null;
     /**

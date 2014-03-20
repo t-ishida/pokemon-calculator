@@ -1,5 +1,5 @@
 <?php
-namespace pokemon;
+namespace pokemon\classes;
 class HP extends Parameter {
     public function calcParameter($level, $revise)
     {

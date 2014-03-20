@@ -1,6 +1,7 @@
 <?php
 namespace pokemon;
-use pokemon\temperament\Temperament;
+use pokemon\classes\Parameter;
+use pokemon\classes\temperament\Temperament;
 
 class Pokemon {
     // level
@@ -49,6 +50,7 @@ class Pokemon {
     public function load ($id)
     {
         // TODO: 種族値をなんらかの手段でロードします。仮置きでオンバーンにしておきます。
+        $this->setName('オンバーン');
         $this->hp->setFamilyPoint(85);
         $this->attack->setFamilyPoint(70);
         $this->defence->setFamilyPoint(80);
@@ -183,6 +185,9 @@ class Pokemon {
         $this->speed = $speed;
     }
 
+    /**
+     * @return null|Parameter
+     */
     public function getSpeed()
     {
         return $this->speed;

@@ -1,4 +1,5 @@
 <?php
+namespace pokemon\lib;
 /**
  * JavaっぽいEnumを実装するためのベース
  */
@@ -76,6 +77,7 @@ abstract class EnumBase
                 $enum = $clazz->newInstance();
                 $enum->setName($key);
                 $enum->setValue($val);
+                self::$enumArray[$className][] = $enum;
                 $history[] = $val;
             }
         }
