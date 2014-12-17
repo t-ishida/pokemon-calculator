@@ -1,0 +1,11 @@
+- name: add yum repository
+  yum: state=present name={{ item }}
+  with_items:
+    - http://dl.iuscommunity.org/pub/ius/stable/Redhat/6/x86_64/epel-release-6-5.noarch.rpm
+    - http://dl.iuscommunity.org/pub/ius/stable/Redhat/6/x86_64/ius-release-1.0-11.ius.el6.noarch.rpm
+- name: install some modules
+  yum: state=installed name={{ item }}
+  with_items:
+    - ImageMagick
+    - ImageMagick-devel
+

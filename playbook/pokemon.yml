@@ -1,0 +1,32 @@
+- hosts: all
+  sudo: yes
+  gather_facts: false
+  vars:
+    timezone: Asia/Tokyo
+  tasks:
+  - name: Check current timezone
+    shell: awk -F \" '{ print $2}' /etc/sysconfig/clock
+    register: current_zone
+    changed_when: False
+  - name: Set UTC timezone
+    file: src=/usr/share/zoneinfo/{{ timezone }}  dest=/etc/localtime state=link force=yes
+    when: current_zone.stdout != '{{ timezone }}'
+- hosts: web
+  sudo: yes
+  roles:
+    - httpd-init
+    - php-init
+    - {role: geerlingguy.php}
+    - {role: geerlingguy.php-xdebug, when: develop == "true"}
+  vars:
+      domain_name: "pokemon.local"
+      apache_vhosts_prefix: "{{ domain_name }}"
+      apache_vhosts:
+        - {servername: "{{ domain_name }}", documentroot: "/var/www/html/{{ domain_name }}/current/docroot"}
+  tasks:
+    - file: path=/var/www/html/{{ domain_name }}/current state=directory mode=755
+      when: develop == "true"
+    - name: create log directory
+      file: path=/var/log/{{ domain_name }} state=directory mode=777
+  tags:
+    - web

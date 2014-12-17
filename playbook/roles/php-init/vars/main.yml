@@ -1,0 +1,20 @@
+php_memory_limit: "128M"
+php_max_execution_time: "90"
+php_upload_max_filesize: "256M"
+php_packages:
+  - php54
+  - php54-cli
+  - php54-common
+  - php54-devel
+  - php54-gd
+  - php54-mbstring
+  - php54-mysql
+  - php54-pdo
+  - php54-pear
+  - php54-process
+  - php54-snmp
+  - php54-xml
+  - php54-pecl-memcache.x86_64
+  - php54-pecl-imagick.x86_64
+  - php54-pecl-apc.x86_64
+

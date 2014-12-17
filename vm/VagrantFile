@@ -1,0 +1,12 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.define :web do |node|
+    node.vm.box = "CentOS65"
+    node.vm.network :forwarded_port, guest: 22,    host: 2001, id: "ssh"
+    node.vm.network :forwarded_port, guest: 80,    host: 2002, id: "http"
+    node.vm.network :private_network, ip: "192.168.33.12"
+    node.vm.synced_folder File.expand_path('../../', __FILE__) ,"/var/www/html/pokemon.local/current"
+  end
+end

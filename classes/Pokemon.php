@@ -1,5 +1,5 @@
 <?php
-namespace pokemon;
+namespace pokemon\classes;
 use pokemon\classes\Parameter;
 use pokemon\classes\temperament\Temperament;
 
@@ -33,7 +33,7 @@ class Pokemon {
      */
     private $skills = null;
 
-    function __construct($id = null)
+    function __construct()
     {
         $this->level = 1;
         $this->hp =  new HP();
@@ -42,21 +42,6 @@ class Pokemon {
         $this->specialAttack = new Parameter();
         $this->specialDefence = new Parameter();
         $this->speed = new Parameter();
-        if ($id) {
-            $this->load($id);
-        }
-    }
-
-    public function load ($id)
-    {
-        // TODO: 種族値をなんらかの手段でロードします。仮置きでオンバーンにしておきます。
-        $this->setName('オンバーン');
-        $this->hp->setFamilyPoint(85);
-        $this->attack->setFamilyPoint(70);
-        $this->defence->setFamilyPoint(80);
-        $this->specialAttack->setFamilyPoint(97);
-        $this->specialAttack->setFamilyPoint(80);
-        $this->specialAttack->setFamilyPoint(123);
     }
 
     public function getHpValue ()
@@ -103,6 +88,24 @@ class Pokemon {
             $this->temperament->getSpeedReviseBudget()
         );
     }
+
+    public function getMaxSpeedValue ()
+    {
+        return $this->speed->getMax(
+            $this->level,
+            $this->temperament->getSpeedReviseBudget()
+        );
+    }
+
+    public function calcTargetSpeed ($target)
+    {
+        return $this->speed->calcBasePoint(
+            $target,
+            $this->level,
+            $this->temperament->getSpeedReviseBudget()
+        );
+    }
+
 
     public function levelUp ()
     {
@@ -203,36 +206,23 @@ class Pokemon {
         return $this->name;
     }
 
-    /**
-     * @param \pokemon\Type $skills
-     */
     public function setSkills($skills)
     {
         $this->skills = $skills;
     }
 
-    /**
-     * @return \pokemon\Type
-     */
     public function getSkills()
     {
         return $this->skills;
     }
 
-    /**
-     * @param \pokemon\Type $types
-     */
     public function setTypes($types)
     {
         $this->types = $types;
     }
 
-    /**
-     * @return \pokemon\Type
-     */
     public function getTypes()
     {
         return $this->types;
     }
-
 }

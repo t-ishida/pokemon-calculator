@@ -64,6 +64,12 @@ class TargetLoader {
             $target->setName($row['name']);
             $result[] = $target;
         }
+        usort($result, function ($a,$b) {
+            if ($a->getSpeed() === $b->getSpeed()) {
+                return 0;
+            }
+            return ($a->getSpeed() < $b->getSpeed()) ? -1 : 1;
+        });
         return $result;
     }
 }

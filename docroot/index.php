@@ -1,26 +1,28 @@
 <?php
+$path = realpath(__DIR__ . '/../bootstrap.php');
+require $path;
 use pokemon\lib\ActionBase;
 use pokemon\lib\ClassLoader;
-require_once __DIR__ . '/../bootstrap.php';
-$requestName = basename(parse_url($_SERVER['REQUEST_URI'])['path']);
-$actionPath  = realpath(ClassLoader::getRootDirectory() . '/actions/'  . $requestName . '.php');
-$viewPath    = str_replace ('actions', 'views', $actionPath);
+$requestName = parse_url($_SERVER['REQUEST_URI'])['path'];
+$requestName = str_replace('/../', '', $requestName);
+$requestName = preg_replace('#^/#', '', $requestName);
+$actionPath  = realpath(ClassLoader::getRootDirectory('pokemon') . '/actions/'  . $requestName . '.php');
 if (!is_file($actionPath)) {
     header ('HTTP/1.1 404 NotFound');
     exit();
 }
-if (!is_file($viewPath)) {
-    header ('HTTP/1.1 404 NotFound');
-    exit();
-}
-require_once $actionPath;
-$actionName = ClassLoader::getNamespaceRoot() . '\\actions\\' . preg_replace( '#\.php$#', '', $requestName);
+$actionName = 'pokemon\\actions\\' . preg_replace('#\.php$#', '', $requestName);
+$actionName = str_replace(DIRECTORY_SEPARATOR, '\\', $actionName);
 $action = new $actionName;
 if (!($action instanceof ActionBase)) {
     header ('HTTP/1.1 404 NotFound');
     exit();
 }
 $action->setRequest($_REQUEST);
-$response = $action->run();
-include $viewPath;
-
+try {
+    $response = $action->run();
+    foreach($response->getHeaders() as $header) header($header);
+    echo $response->getContents();
+} catch (\Exception $e) {
+    echo 'fatal error!' . $e->getMessage();
+}

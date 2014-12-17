@@ -1,0 +1,29 @@
+NameVirtualHost *:80
+NameVirtualHost *:443
+
+{% for vhost in apache_vhosts %}
+<VirtualHost *:80>
+  ServerName  {{ vhost.servername }}
+  DocumentRoot {{ vhost.documentroot }}
+{% if vhost.errorlog is defined %}
+  ErrorLog {{ vhost.errorlog }}
+{% endif %}
+{% if vhost.transferlog is defined %}
+  TransferLog {{ vhost.transferlog }}
+{% endif %}
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName  {{ vhost.servername }}
+  DocumentRoot {{ vhost.documentroot }}
+  SSLEngine On
+  SSLCertificateFile /etc/httpd/conf/server.crt
+  SSLCertificateKeyFile /etc/httpd/conf/server.key
+{% if vhost.errorlog is defined %}
+  ErrorLog {{ vhost.errorlog }}
+{% endif %}
+{% if vhost.transferlog is defined %}
+  TransferLog {{ vhost.transferlog }}
+{% endif %}
+</VirtualHost>
+{% endfor %}

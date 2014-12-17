@@ -14,31 +14,30 @@ abstract class EnumBase
     // 値
     private $value = null;
 
-    // public には new させません
-    private function __construct()
+    public  function __construct()
     {
     }
 
-    private function setName($name)
+    public function setName($name)
     {
         $this->name = $name;
     }
 
-    private function setValue($value)
+    public function setValue($value)
     {
         $this->value = $value;
     }
 
     /**
      * 名前を直に指定してアクセスしたい時に利用します
-     * @param $name Enumの名前です
+     * @param $name EnumBaseの名前です
      * @param $args 今回は使いません
-     * @throws Exception
-     * @return \Enum 対象のインスタンスです
+     * @throws \Exception
+     * @return EnumBase 対象のインスタンスです
      */
     final public static function __callStatic($name, $args)
     {
-        if ($args) throw new Exception('undefined method');
+        if ($args) throw new \Exception('undefined method');
         return self::valueOf($name);
     }
 
@@ -51,7 +50,7 @@ abstract class EnumBase
     {
         $className = get_called_class();
         if (!isset(self::$enumArray[$className])) {
-            $class = new ReflectionClass($className);
+            $class = new \ReflectionClass($className);
             $constants = $class->getConstants();
             if ($constants) {
                 self::fillByConstants($constants);
@@ -70,10 +69,10 @@ abstract class EnumBase
         $history = array();
         foreach ($classes as $class) {
             if (is_subclass_of($class ,$className)) {
-                $clazz = new ReflectionClass($class);
-                $key = $clazz->getConstant('NAME');
+                $clazz = new \ReflectionClass($class);
+                $key = $clazz->getConstant('KEY');
                 $val = $clazz->getConstant('VALUE');
-                if (in_array($val, $history)) throw new Exception('値の重複っす');
+                if (in_array($val, $history)) throw new \Exception('値の重複っす');
                 $enum = $clazz->newInstance();
                 $enum->setName($key);
                 $enum->setValue($val);
@@ -92,7 +91,7 @@ abstract class EnumBase
         $className = get_called_class();
         $history = array();
         foreach ($constants as $key => $val) {
-            if (in_array($val, $history)) throw new Exception('値の重複っす');
+            if (in_array($val, $history)) throw new \Exception('値の重複っす');
             $enum = new $className;
             $enum->setName($key);
             $enum->setValue($val);

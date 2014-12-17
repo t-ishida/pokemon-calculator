@@ -1,0 +1,28 @@
+- name: add yum repository
+  yum: state=present name={{ item }}
+  with_items:
+    - http://dl.iuscommunity.org/pub/ius/stable/Redhat/6/x86_64/epel-release-6-5.noarch.rpm
+    - http://dl.iuscommunity.org/pub/ius/stable/Redhat/6/x86_64/ius-release-1.0-11.ius.el6.noarch.rpm
+- name: install some modules
+  yum: state=installed name={{ item }}
+  with_items:
+    - munin-node
+    - httpd
+    - httpd-devel
+    - mod_ssl
+    - mod_security
+- name: editting httpd.conf
+  replace: regexp="AllowOverride None" replace="AllowOverride all" dest=/etc/httpd/conf/httpd.conf
+- name: copy ssl conf
+  copy: src=ssl.conf dest=/etc/httpd/conf.d/ owner=root group=root mode=644
+- name: copy key
+  copy: src={{ item }} dest=/etc/httpd/conf/ owner=root group=root mode=644
+  with_items:
+    - server.crt
+    - server.csr
+    - server.key
+  when: develop == "true"
+- name: create VirtualHost
+  template: src=virtualhost.conf.j2 dest=/etc/httpd/conf.d/{{ apache_vhosts_prefix }}-vhosts.conf owner=root group=root mode=0644
+- name: running apache
+  service: name=httpd state=running enabled=yes
