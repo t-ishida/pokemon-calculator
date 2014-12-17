@@ -32,7 +32,7 @@ class Repository {
     }
 
     public function getContent ($id) {
-        $curl = curl_init(self::END_POINT . '/pokemon/' . $id);
+        $curl = curl_init(self::END_POINT . '/pokemon/' . urlencode($id));
         curl_setopt_array($curl, array(
             CURLOPT_CONNECTTIMEOUT => 10,
             CURLOPT_RETURNTRANSFER => true,
