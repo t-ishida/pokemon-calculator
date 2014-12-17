@@ -15,14 +15,7 @@ class CalcSpeed extends ActionBase {
     public function run ()
     {
         $targets = TargetLoader::load();
-        $id = null;
-        if (!isset($this->getRequest()['id'])) {
-            // とりあえずオンバーン固定です
-            $id = 715;
-        } else {
-            $id = $this->getRequest()['id'];
-        }
-        $pokemon = $this->repository->build($id);
+        $pokemon = $this->repository->build(715);
 
         // Lv50 ということにします
         $pokemon->setLevel(50);
