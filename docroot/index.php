@@ -4,8 +4,7 @@ require $path;
 use pokemon\lib\ActionBase;
 use pokemon\lib\ClassLoader;
 $requestName = parse_url($_SERVER['REQUEST_URI'])['path'];
-$requestName = str_replace('/../', '', $requestName);
-$requestName = preg_replace('#^/#', '', $requestName);
+$requestName = preg_replace('#(?:^/|/../|\0)#', '', $requestName);
 $actionPath  = realpath(ClassLoader::getRootDirectory('pokemon') . '/actions/'  . $requestName . '.php');
 if (!is_file($actionPath)) {
     header ('HTTP/1.1 404 NotFound');
